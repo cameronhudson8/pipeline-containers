@@ -5,6 +5,7 @@ ARG TARGETARCH
 ARG TARGETOS
 ARG TERRAFORM_VERSION='1.12.2'
 ARG TFLINT_VERSION='0.58.1'
+ARG TRIVY_VERSION='0.65.0'
 
 # Install tools used to install other packages
 RUN : \
@@ -51,6 +52,12 @@ RUN : \
     && rm -f /tmp/tflint.zip \
     && mv /tmp/tflint/tflint /usr/local/bin/tflint \
     && rm -rf /tmp/tflint
+
+# Install Trivy.
+COPY ./lib/trivy/install.sh .
+RUN : \
+    && ./install.sh "${TRIVY_VERSION}" \
+    && rm install.sh
 
 # Remove tools used to install other packages
 RUN apk del \
