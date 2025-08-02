@@ -15,5 +15,3 @@ jobs:
           context: .
           file: ./infrastructure/Containerfile
           push: false
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
