@@ -18,5 +18,4 @@ jobs:
           context: .
           file: ./infrastructure/Containerfile
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ghcr.io/${{ github.repository }}:$(date +%Y-%m-%dT%H-%M-%SZ)
