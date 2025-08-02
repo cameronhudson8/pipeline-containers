@@ -46,7 +46,8 @@ RUN : \
         --location \
         --output /usr/local/bin/terragrunt \
         --show-error \
-        --silent
+        --silent \
+    && chmod +x /usr/local/bin/terragrunt
 
 # Remove tools used to install other packages
 RUN apk del \
