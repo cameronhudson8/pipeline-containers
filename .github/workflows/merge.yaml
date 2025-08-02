@@ -12,10 +12,13 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+      - name: Generate timestamp
+        id: timestamp
+        run: echo "timestamp=$(date +%Y-%m-%dT%H-%M-%SZ)" >>"${GITHUB_OUTPUT}"
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./infrastructure/Containerfile
           push: true
-          tags: ghcr.io/${{ github.repository }}:$(date +%Y-%m-%dT%H-%M-%SZ)
+          tags: ghcr.io/${{ github.repository }}:${{ steps.timestamp.outputs.timestamp }}
