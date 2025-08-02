@@ -26,7 +26,7 @@ RUN : \
 
 # Install Terraform.
 RUN : \
-    && curl "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_arm64.zip" \
+    && curl "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip" \
         --fail-with-body \
         --output /tmp/terraform.zip \
         --show-error \
