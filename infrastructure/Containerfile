@@ -2,7 +2,9 @@ FROM alpine:3
 WORKDIR /workspace
 
 ARG TARGETARCH
+ARG TARGETOS
 ARG TERRAFORM_VERSION='1.12.2'
+ARG TERRAGRUNT_VERSION='0.84.0'
 
 # Install tools used to install other packages
 RUN : \
@@ -26,8 +28,9 @@ RUN : \
 
 # Install Terraform.
 RUN : \
-    && curl "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_${TARGETARCH}.zip" \
+    && curl "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_${TARGETOS}_${TARGETARCH}.zip" \
         --fail-with-body \
+        --location \
         --output /tmp/terraform.zip \
         --show-error \
         --silent \
@@ -35,6 +38,15 @@ RUN : \
     && rm -f /tmp/terraform.zip \
     && mv /tmp/terraform/terraform /usr/local/bin/terraform \
     && rm -rf /tmp/terraform
+
+# Install Terragrunt.
+RUN : \
+    && curl "https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_${TARGETOS}_${TARGETARCH}" \
+        --fail-with-body \
+        --location \
+        --output /usr/local/bin/terragrunt \
+        --show-error \
+        --silent
 
 # Remove tools used to install other packages
 RUN apk del \
