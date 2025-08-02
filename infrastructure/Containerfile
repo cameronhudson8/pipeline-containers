@@ -1,0 +1,42 @@
+FROM alpine:3
+WORKDIR /workspace
+
+ARG TARGETARCH
+ARG TERRAFORM_VERSION='1.12.2'
+
+# Install tools used to install other packages
+RUN : \
+    && apk update \
+    && apk add --no-cache \
+        curl \
+        zip
+
+# Install basic dependencies.
+RUN : \
+    && apk update \
+    && apk add --no-cache \
+        bash \
+        git
+
+# Install pre-commit.
+RUN : \
+    && apk update \
+    && apk add --no-cache \
+        pre-commit
+
+# Install Terraform.
+RUN : \
+    && curl "https://releases.hashicorp.com/terraform/${TERRAFORM_VERSION}/terraform_${TERRAFORM_VERSION}_linux_arm64.zip" \
+        --fail-with-body \
+        --output /tmp/terraform.zip \
+        --show-error \
+        --silent \
+    && unzip -d /tmp/terraform -q /tmp/terraform.zip \
+    && rm -f /tmp/terraform.zip \
+    && mv /tmp/terraform/terraform /usr/local/bin/terraform \
+    && rm -rf /tmp/terraform
+
+# Remove tools used to install other packages
+RUN apk del \
+    curl \
+    unzip
