@@ -4,7 +4,7 @@ WORKDIR /workspace
 ARG TARGETARCH
 ARG TARGETOS
 ARG TERRAFORM_VERSION='1.12.2'
-ARG TERRAGRUNT_VERSION='0.84.0'
+ARG TFLINT_VERSION='0.58.1'
 
 # Install tools used to install other packages
 RUN : \
@@ -39,15 +39,18 @@ RUN : \
     && mv /tmp/terraform/terraform /usr/local/bin/terraform \
     && rm -rf /tmp/terraform
 
-# Install Terragrunt.
+# Install tflint.
 RUN : \
-    && curl "https://github.com/gruntwork-io/terragrunt/releases/download/v${TERRAGRUNT_VERSION}/terragrunt_${TARGETOS}_${TARGETARCH}" \
+    && curl "https://github.com/terraform-linters/tflint/releases/download/v${TFLINT_VERSION}/tflint_${TARGETOS}_${TARGETARCH}.zip" \
         --fail-with-body \
         --location \
-        --output /usr/local/bin/terragrunt \
+        --output /tmp/tflint.zip \
         --show-error \
         --silent \
-    && chmod +x /usr/local/bin/terragrunt
+    && unzip -d /tmp/tflint -q /tmp/tflint.zip \
+    && rm -f /tmp/tflint.zip \
+    && mv /tmp/tflint/tflint /usr/local/bin/tflint \
+    && rm -rf /tmp/tflint
 
 # Remove tools used to install other packages
 RUN apk del \
