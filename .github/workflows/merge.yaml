@@ -18,11 +18,14 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
           registry: ghcr.io
           username: ${{ github.actor }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
       - name: Build and push Docker image
         uses: docker/build-push-action@v6
         with:
           context: .
           file: ./infrastructure/Containerfile
+          platforms: linux/amd64,linux/arm64
           push: true
           tags: ghcr.io/${{ github.repository }}:${{ steps.timestamp.outputs.timestamp }}
 name: push to main
