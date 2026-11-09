@@ -6,8 +6,8 @@ jobs:
       packages: write
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
+      - name: Checkout
+        uses: actions/checkout@v7
       - id: timestamp
         name: Generate timestamp
         run: echo "timestamp=$(date +%Y-%m-%dT%H-%M-%SZ)" >>"${GITHUB_OUTPUT}"
